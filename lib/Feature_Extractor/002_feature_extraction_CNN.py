@@ -77,3 +77,96 @@ net.blobs['data'].reshape(1,        # batch size
 #    #for i in range(len(filename)):
 #        #filename.append(filename1[i])
 #    return filename
+
+def get_files_in(folder, pattern='*.txt'):
+    return glob(path.join(folder, pattern))
+
+def filenames(folder):
+    filename = get_files_in(folder, '*.jpg')
+    #filename1 = get_files_in(folder, '*.mat')
+    #for i in range(len(filename)):
+        #filename.append(filename1[i])
+    return filename
+
+
+def image_lable(file_dir):
+    img_dir = filenames(file_dir)
+    lable = []
+    img_name = []
+    for i in range(len(img_dir)):
+        image = caffe.io.load_image(img_dir[i])
+        if image == None:
+            print img_dir[i]
+            continue
+        img_name.append(img_dir[i])
+        #if img_dir[i].split("/")[1][0].isupper() == True:
+            #lable.append(0) # 0 means cat
+        #else:
+            #lable.append(1) # dog
+            
+    return np.array(img_name)#, np.array(lable)
+
+
+
+
+i = 0
+image = caffe.io.load_image(X_train_name[0])
+
+
+
+
+# Test on images 
+image2 = caffe.io.load_image(caffe_root + 'examples/images/dog_0372.jpg')
+net.blobs['data'].data[...] = transformer.preprocess('data', image2)
+net.forward()  #####??????????? 
+feature2 = np.reshape(net.blobs['norm2'].data[0], 43264, order='C') # make into one column 
+
+
+data_norm2 = np.column_stack([feature2])
+data_norm2 = pd.DataFrame(data_norm2)
+
+data_norm2.to_csv('/Users/yanjin1993/caffe/examples/data/dog_0372.csv')
+
+
+
+
+# Norm2 Layer ----------------------------------------------------------
+name = pd.read_csv('/Users/yanjin1993/Google Drive/Columbia University /2016 Fall /Applied Data Science /Project_003/image_classification/data /exported_data/dat_namelist.csv')
+X_train_name = name['img_directory']
+
+i = 0
+image = caffe.io.load_image(X_train_name[0])
+net.blobs['data'].data[...] = transformer.preprocess('data', image)
+net.forward()
+feature = np.reshape(net.blobs['norm2'].data[0], 43264, order='C')
+for name in X_train_name[1:]:
+    image = caffe.io.load_image(name)
+    net.blobs['data'].data[...] = transformer.preprocess('data', image)
+    net.forward()
+	feature = np.vstack([feature,np.reshape(net.blobs['norm2'].data[0], 43264, order='C')])
+	i += 1
+    print i
+
+
+print feature.shape, X_train_name.shape
+data_norm2 = np.column_stack([X_train_name.T,feature])
+data_norm2 = pd.DataFrame(data_norm2)
+data_norm2.to_csv('/Users/yanjin1993/Google Drive/Columbia University /2016 Fall /Applied Data Science /Project_003/image_classification/data /exported_data/data_norm2.csv')
+
+
+# FC6 Layer -----------------------------------------------------------
+name = pd.read_csv('/Users/yanjin1993/Google Drive/Columbia University /2016 Fall /Applied Data Science /Project_003/image_classification/data /exported_data/dat_namelist.csv')
+X_train_name = name['img_directory']
+
+i = 0
+image = caffe.io.load_image(X_train_name[0])
+net.blobs['data'].data[...] = transformer.preprocess('data', image)
+net.forward()
+feature = np.array(net.blobs['fc6'].data[0])
+for name in X_train_name[1:]:
+    image = caffe.io.load_image(name)
+    net.blobs['data'].data[...] = transformer.preprocess('data', image)
+    net.forward()
+    feature = np.vstack([feature,(np.array(net.blobs['fc6'].data[0]))])
+    i += 1
+    print i
