@@ -43,7 +43,7 @@ summary(class)
 #print(svm_tune)
 
 ###### non-linear SVM Training#####
-svp <- ksvm(x=x,y=as.vector(y),type="C-svc",kernel="rbf",kpar=list(sigma=1),C=1) 
+#svp <- ksvm(x=x,y=as.vector(y),type="C-svc",kernel="rbf",kpar=list(sigma=1),C=1) 
 
 svm_model2 <- svm(x,y, kernal = polinomial)
 summary(svm_model2)
