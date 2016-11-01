@@ -15,14 +15,14 @@ head(norm2)[1:9]
 
 attach(norm2)
 ####cleaning data####
-norm2 <- subset(norm2, select=-c(X,X0))
+fc6 <- subset(norm2, select=-c(X,X0))
 x <- subset(norm2, select = -Categories)
 x <- subset(x, select = -Num_Categories)
 y <- subset(norm2, select = Num_Categories)
 
 
 ##### PCA #########
-pca <- prcomp(x,scale = T)
+pca <- prcomp(x,scale = FALSE)
 head(pca$x)
 plot(pca,type="lines")
 
@@ -62,7 +62,11 @@ cv_svmTune <- tune.svm(pca_x, y =y, cost = Cs, gamma = gammas,degree = degres,co
                        tunecontrol = tc)
 summary(cv_svmTune)
 
-
+# best model 
+p = cv_svmTune$best.parameters
+best.svm = svm(pca_x,y,cost = p[,4], gamma = p[,2],degree = p[,1],coef0 = p[,3],type = "C-classification")
+pred_svm <- predict(best.svm,pca_x)
+accur = sum(pred_svm == as.vector(as.matrix(y)))/2000
 
 
 
