@@ -39,7 +39,7 @@ Test = function(new.data){
     }
   } 
   results = as.data.frame(cbind(norm2_test$pred_Categor_svm,norm2_test$pred_Categor_gbm))
-  names(results) = c("svm","gbm")
+  names(results) = c("svm.adv","gbm.base")
   return = results
 }
 
