@@ -3,43 +3,45 @@ library(e1071)
 library(rpart)
 library(class)
 library(gbm)
-data = read.csv(file.choose(), header = T)
-dim(data)
-head(data)[,1:6]
-data$Num_Categories[1:1000] = 1
-data$Num_Categories[1001:2000] = 0
-data$Categories[data$Num_Categories==0] = "dog"
-data$Categories[data$Num_Categories==1] = "chicken"
-dim(data)
-norm2_test = data
-head(norm2_test)[1:9]
 
-attach(norm2_test)
-####cleaning data####
-norm2_test <- subset(norm2_test, select=-c(X,X0))
-x_test <- subset(norm2_test, select = -Categories)
-x_test <- subset(x_test, select = -Num_Categories)
-y_test <- subset(norm2_test, select = Num_Categories)
+### Build the Test function 
+Test = function(new.data){
+  norm2_test = new.data
+  ####cleaning data####
+  norm2_test <- subset(norm2_test, select=-c(X,X0))
+  x_test <- norm2_test
+  
+  ##### PCA #########
+  pca_test <- prcomp(x_test,scale = T)
+  
+  # select the number of PC
+  pca_xtest = pca_test$x[,1:5]
+  
+  ######Testing Model Performance for SVM#####
+  pred_test <- predict(model$svm.adv,pca_xtest)
+  for (i in 1:2000){
+    if (pred_test[i] > 0.5){
+      norm2_test$pred_Categor_svm[i] = 1
+    }
+    else{
+      norm2_test$pred_Categor_svm[i] = 0
+    }
+  } 
+  
+  ######Testing Model Performance for GBM#####
+  pred_test_gbm <- predict(model$gbm.base,pca_xtest,n.trees = 100)
+  for (i in 1:2000){
+    if (pred_test_gbm[i] > 0){
+      norm2_test$pred_Categor_gbm[i] = 1
+    }
+    else{
+      norm2_test$pred_Categor_gbm[i] = 0
+    }
+  } 
+  results = as.data.frame(cbind(norm2_test$pred_Categor_svm,norm2_test$pred_Categor_gbm))
+  names(results) = c("svm","gbm")
+  return = results
+}
 
-
-##### PCA #########
-pca_test <- prcomp(x_test,scale = T)
-head(pca_test$x)
-plot(pca_test,type="lines")
-
-pr_var <- (pca_test$sdev)^2
-prop_varex <- pr_var/sum(pr_var)
-plot(prop_varex, xlim=c(1,50),xlab = "Principal Component",
-     ylab = "Proportion of Variance Explained",
-     type = "b")
-
-# select the number of PC
-pca_xtest = pca_test$x[,1:5]
-head(pca_xtest)
-
-
-
-######Testing Model Performance#####
-pred_test <- predict(best.svm,pca_xtest)
-accur_test = sum(pred_test == as.vector(as.matrix(y_test)))/2000
-accur_test
+newdat = read.csv(file.choose(), header = T)
+result = Test(newdat)
