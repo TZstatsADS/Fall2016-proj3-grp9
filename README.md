@@ -11,7 +11,7 @@ Term: Fall 2016
 	+ Yanxi Chen
 	+ Ran Li
 	+ Hyungjoon Choi
-+ Project summary: In this project, we created a classification engine for images of poodles versus images of fried chickens. We extract many geature extraction methods: MSER, SIFT, HoG, Harris Corner and CNN deep learning methods. In terms of classifiers, we choose KNN, Logistic and SVM. We cross compare the combinations of feature extraction methods and classifiers in order to find the best model. We also use GBM as our baseline model to do comparision with our advanced model. The final advanced model we choose is CNN(norm2 layer)+SVM. 
++ Project summary: In this project, we created a classification engine for images of poodles versus images of fried chickens. We extract many geature extraction methods: MSER, SIFT, HoG, Harris Corner and CNN deep learning methods. In terms of classifiers, we considered KNN, Logistic and SVM. We cross compare the combinations of feature extraction methods and classifiers in order to find the best model. We also use GBM as our baseline model plus sift feature set to compare with the CNN(norm2 layer) feature set and our advanced model. The final advanced model we choose is CNN(norm2 layer)+SVM. 
 	
 **Contribution statement**: ([default](doc/a_note_on_contributions.md)) Yanjin took charge of Caffe CNN feature extraction/presentation. Youzhu took charge of MSER/HoG/SIFT/Harris feature extraction. Yanxi took charge of Logistic classifier. Ran took charge of KNN/SVM and PCA classifier. Hyungjoon took charge of GBM.
 
