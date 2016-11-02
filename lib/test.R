@@ -19,7 +19,7 @@ Test = function(new.data){
   
   ######Testing Model Performance for SVM#####
   pred_test <- predict(model$svm.adv,pca_xtest)
-  for (i in 1:2000){
+  for (i in 1:200){
     if (pred_test[i] > 0.5){
       norm2_test$pred_Categor_svm[i] = 1
     }
@@ -30,7 +30,7 @@ Test = function(new.data){
   
   ######Testing Model Performance for GBM#####
   pred_test_gbm <- predict(model$gbm.base,pca_xtest,n.trees = 100)
-  for (i in 1:2000){
+  for (i in 1:200){
     if (pred_test_gbm[i] > 0){
       norm2_test$pred_Categor_gbm[i] = 1
     }
