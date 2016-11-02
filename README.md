@@ -10,10 +10,10 @@ Term: Fall 2016
 	+ Youzhu Liu
 	+ Yanxi Chen
 	+ Ran Li
-	+ 
-+ Project summary: In this project, we created a classification engine for images of poodles versus images of fried chickens. 
+	+ Hyungjoon Choi
++ Project summary: In this project, we created a classification engine for images of poodles versus images of fried chickens. We extract many geature extraction methods: MSER, SIFT, HoG, Harris Corner and CNN deep learning methods. In terms of classifiers, we choose KNN, Logistic and SVM. We cross compare the combinations of feature extraction methods and classifiers in order to find the best model. We also use GBM as our baseline model to do comparision with our advanced model.
 	
-**Contribution statement**: ([default](doc/a_note_on_contributions.md)) All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement. 
+**Contribution statement**: ([default](doc/a_note_on_contributions.md)) Yanjin took charge of Caffe CNN feature extraction/presentation. Youzhu took charge of MSER/HoG/SIFT/Harris feature extraction. Yanxi took charge of Logistic classifier. Ran took charge of KNN/SVM and PCA classifier. Hyungjoon took charge of GBM.
 
 Following [suggestions](http://nicercode.github.io/blog/2013-04-05-projects/) by [RICH FITZJOHN](http://nicercode.github.io/about/#Team) (@richfitz). This folder is orgarnized as follows.
 
