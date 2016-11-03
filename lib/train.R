@@ -17,7 +17,7 @@ Train = function(data, Y){
   ##### PCA #########
   pca <- prcomp(x,scale = T)
   
-  # make prince compoent of 8 # 
+  #select number of PC# 
   pca_x = pca$x[,1:5]
   
   ### svm classification after PCA
@@ -40,8 +40,11 @@ Train = function(data, Y){
   
 }
 
-###  train model 
+### model trainning
+# read training feature data
 norm2 = read.csv(file.choose(), header = T)
+# add label on feature data
 norm2$Num_Categories[1:1000] = 1
 norm2$Num_Categories[1001:2000] = 0
+# train model
 model = Train(data = norm2, Y = Num_Categories)
