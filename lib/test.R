@@ -43,5 +43,7 @@ Test = function(new.data){
   return = results
 }
 
+# read test feature data#
 newdat = read.csv(file.choose(), header = T)
+# output predicted result#
 result = Test(newdat)
